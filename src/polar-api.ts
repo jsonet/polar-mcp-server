@@ -25,7 +25,7 @@ export async function polarApiRequest(
     ...options,
     headers: {
       Authorization: `Bearer ${accessToken}`,
-      Accept: "application/json",
+      Accept: endpoint.endsWith("/tcx") ? "application/vnd.garmin.tcx+xml" : endpoint.endsWith("/gpx") ? "application/gpx+xml" : "application/json",
       ...options.headers,
     },
   });
@@ -42,7 +42,7 @@ export async function polarApiRequest(
     return null;
   }
 
-  return JSON.parse(text);
+  try { return JSON.parse(text); } catch { return text; }
 }
 
 /**
